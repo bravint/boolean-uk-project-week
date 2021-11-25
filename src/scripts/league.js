@@ -338,84 +338,88 @@ function renderStandings(data) {
             console.log(state.id);
             window.open(`/teams.html?id=${id}`)
         })
-        }
+    }
         renderLeagueStats(data);
 }
 
 //fixtures
 
 function renderFixtures(data) {
-    let counter = 0;
     let currentMatchday = data.matches[0].season.currentMatchday;
+    
+    changeMatchday("fixtures", data, currentMatchday);
+    renderFixturesList(data, currentMatchday)
+}
+
+function renderFixturesList(data, currentMatchday) {
+    let counter = 0;
+
     const fixturesSection = document.querySelector('.leagueFixtures');
+    fixturesSection.innerHTML="";
+
+    changeMatchday("fixtures", data, currentMatchday);
 
     const fixturesHeading = document.createElement('h2');
     fixturesHeading.className = "fixturesHeading";
     fixturesHeading.innerText = "Upcoming Matches";
     fixturesSection.append(fixturesHeading);
 
-    renderChangeRound("fixtures");
-    renderDynamicElColours(data.competition.code); 
-
     const fixturesListContainer = document.createElement('ul');
     fixturesListContainer.className = 'fixturesContainer';
     fixturesSection.append(fixturesListContainer);
-    renderUpcomingList (data);
 
-    function renderUpcomingList (data) {
-        let dateCurrent = getDate();
+    let dateCurrent = getDate();
 
-        for (let i = 0; i < data.matches.length; i++) {
-            if (data.matches[i].matchday === currentMatchday) {
-                date = dateOfMatch(data.matches[i].utcDate);
+    for (let i = 0; i < data.matches.length; i++) {
+        if (data.matches[i].matchday === currentMatchday) {
+            date = dateOfMatch(data.matches[i].utcDate);
 
-                if (dateCurrent.date <= date) {
-                const homeId = data.matches[i].homeTeam.id;
-                const awayId = data.matches[i].awayTeam.id;
+            if (dateCurrent.date <= date) {
+            const homeId = data.matches[i].homeTeam.id;
+            const awayId = data.matches[i].awayTeam.id;
 
-                const listItemEl = document.createElement('li');
-                listItemEl.className = 'matchdayListItem';
-                fixturesListContainer.append(listItemEl);
+            const listItemEl = document.createElement('li');
+            listItemEl.className = 'matchdayListItem';
+            fixturesListContainer.append(listItemEl);
 
-                const homeCrest = document.createElement('img');
-                homeCrest.src = `https://crests.football-data.org/${homeId}.svg`;
-                homeCrest.setAttribute("height", "25px");
-                listItemEl.append(homeCrest);
+            const homeCrest = document.createElement('img');
+            homeCrest.src = `https://crests.football-data.org/${homeId}.svg`;
+            homeCrest.setAttribute("height", "25px");
+            listItemEl.append(homeCrest);
 
-                const homeTeam = document.createElement('a');
-                homeTeam.id = data.matches[i].homeTeam.id;
-                homeTeam.href = "#";
-                homeTeam.innerText = fixTeamNames(data.matches[i].homeTeam.name);
-                listItemEl.append(homeTeam);
+            const homeTeam = document.createElement('a');
+            homeTeam.id = data.matches[i].homeTeam.id;
+            homeTeam.href = "#";
+            homeTeam.innerText = fixTeamNames(data.matches[i].homeTeam.name);
+            listItemEl.append(homeTeam);
 
-                const Score = document.createElement('p');
-                Score.innerText = dateAndTimeofMatch(data.matches[i].utcDate);
-                listItemEl.append(Score);
+            const Score = document.createElement('p');
+            Score.innerText = dateAndTimeofMatch(data.matches[i].utcDate);
+            listItemEl.append(Score);
 
-                const awayTeam = document.createElement('a');
-                awayTeam.id = data.matches[i].awayTeam.id;
-                awayTeam.href = "#";
-                awayTeam.innerText = fixTeamNames(data.matches[i].awayTeam.name);
-                listItemEl.append(awayTeam);
+            const awayTeam = document.createElement('a');
+            awayTeam.id = data.matches[i].awayTeam.id;
+            awayTeam.href = "#";
+            awayTeam.innerText = fixTeamNames(data.matches[i].awayTeam.name);
+            listItemEl.append(awayTeam);
 
-                const awaycrest = document.createElement('img');
-                awaycrest.src = `https://crests.football-data.org/${awayId}.svg`;
-                awaycrest.setAttribute("height", "25px");
-                listItemEl.append(awaycrest);
+            const awaycrest = document.createElement('img');
+            awaycrest.src = `https://crests.football-data.org/${awayId}.svg`;
+            awaycrest.setAttribute("height", "25px");
+            listItemEl.append(awaycrest);
 
-                const matchDetails = document.createElement('p');
-                matchDetails.innerText = renderVenue(homeId);
-                listItemEl.append(matchDetails);
+            const matchDetails = document.createElement('p');
+            matchDetails.innerText = renderVenue(homeId);
+            listItemEl.append(matchDetails);
 
-                listItemEl.addEventListener("click", function(event) {
-                    let id = event.target.id;
-                    state.id = id;
-                    console.log(state.id);
-                    window.open(`/teams.html?id=${id}`);
-                })
-                
-                counter ++;
-                }
+            listItemEl.addEventListener("click", function(event) {
+                let id = event.target.id;
+                state.id = id;
+                console.log(state.id);
+                window.open(`/teams.html?id=${id}`);
+            })
+            
+            counter ++;           
             }
         }
     }
@@ -427,16 +431,24 @@ function renderFixtures(data) {
     } else if (counter < (state.teams[0].teams.length /2)) {
         currentMatchday ++
     }
+    renderResults(data, currentMatchday)
+}
 
+function renderResults(data, currentMatchday) {
+    changeMatchday("results", data, currentMatchday)
+    renderResultsList(data, currentMatchday);
+}
+
+function renderResultsList(data, currentMatchday) {
     const resultsSection = document.querySelector('.leagueResults');
+    resultsSection.innerHTML="";
+
+    changeMatchday("results", data, currentMatchday);
 
     const resultsHeading = document.createElement('h2')
     resultsHeading.className = "resultsHeading";
     resultsHeading.innerText = "Results";
     resultsSection.append(resultsHeading);
-
-    renderChangeRound("results")
-    renderDynamicElColours(data.competition.code) 
 
     const resultsListContainer = document.createElement('ul');
     resultsListContainer.className = 'resultsContainer';
@@ -496,9 +508,6 @@ function renderFixtures(data) {
                     console.log(state.id)
                     window.open(`/teams.html?id=${id}`)
                 })
-                
-
-
             }
         }
     }
@@ -519,72 +528,163 @@ function setBannerStyling (league) {
 
     } else if (league == 'FL1') {
         document.querySelector(".splashContent").style.backgroundColor = "#091c3e"
-        }
     }
-    function renderDynamicElColours(league) {
-        let newColor;
-        if (league == 'PL') {
-            newColor = "rgba( 55, 0, 60, 0.75 )";   
-        } else if (league == 'SA') {
-            newColor = "#00197d";
-        } else if (league == 'FL1') {
-            newColor = "#091c3e";
-        } else if (league == 'PD') {
-            newColor = "#25282a";
-        } else if (league == 'BL1') {
-            newColor = "red"
-        }
+}
 
-        Array.from(document.querySelectorAll(".changeRound"))
-        .forEach((element => element.style.backgroundColor = `${newColor}`))
+function renderDynamicElColours(league) {
+    let newColor;
+    if (league == 'PL') {
+        newColor = "#37003c";   
+    } else if (league == 'SA') {
+        newColor = "#00197d";
+    } else if (league == 'FL1') {
+        newColor = "#091c3e";
+    } else if (league == 'PD') {
+        newColor = "#25282a";
+    } else if (league == 'BL1') {
+        newColor = "red"
     }
 
-    function renderLeagueStats(data) {
-        const statsEl = document.querySelector(".stats");
+    elementArray = (document.querySelectorAll(".changeMatchday"));
+    elementArray.forEach((element => element.style.backgroundColor = `${newColor}`))
+}
 
-        const LeagueName = document.createElement("p");
-        LeagueName.className = "statsContent Title";
-        LeagueName.innerText = `${data.competition.name}`;
-        statsEl.append(LeagueName);
+function renderLeagueStats(data) {
+    const statsEl = document.querySelector(".stats");
 
-        const LeagueCountry = document.createElement("p");
-        LeagueCountry.className = "statsContent Text";
-        LeagueCountry.innerText = `	\u00B7 ${data.competition.area.name} \u00B7 Season 2021/22 \u00B7 Matchday: ${data.season.currentMatchday}`;
-        statsEl.append(LeagueCountry);
+    const LeagueName = document.createElement("p");
+    LeagueName.className = "statsContent Title";
+    LeagueName.innerText = `${data.competition.name}`;
+    statsEl.append(LeagueName);
 
-        if (data.competition.code == 'BL1' || data.competition.code == 'PD') {
-            document.querySelector(".stats").style.color = "black";
-        } else {
-            document.querySelector(".stats").style.color = "white";
-        }
+    const LeagueCountry = document.createElement("p");
+    LeagueCountry.className = "statsContent Text";
+    LeagueCountry.innerText = `	\u00B7 ${data.competition.area.name} \u00B7 Season 2021/22 \u00B7 Matchday: ${data.season.currentMatchday}`;
+    statsEl.append(LeagueCountry);
+
+    if (data.competition.code == 'BL1' || data.competition.code == 'PD') {
+        document.querySelector(".stats").style.color = "black";
+    } else {
+        document.querySelector(".stats").style.color = "white";
     }
+}
 
-function renderChangeRound(type = "") {
+function changeMatchday(type, data, currentMatchday) {
 
     let parentEl;
+    if (type == "results") {
+
+            parentEl = document.querySelector('.leagueResults');
+
+            const selectRoundEl = document.createElement('div');
+            selectRoundEl.className = "changeMatchday";
+            parentEl.append(selectRoundEl);
+
+            const prevBtn = document.createElement('button');
+            prevBtn.className = "btnMatchday prevBtnResults";
+            prevBtn.innerText = "<";
+            selectRoundEl.append(prevBtn);
+
+            const textRound = document.createElement('p');
+            textRound.className = "textRound";
+            textRound.innerText = `Matchday ${currentMatchday -1}`;
+            selectRoundEl.append(textRound);
+
+            const nextBtn = document.createElement('button')
+            nextBtn.className = "btnMatchday nextBtnResults";
+            nextBtn.innerText = ">";
+            selectRoundEl.append(nextBtn);
+
+            renderDynamicElColours(data.competition.code)
+            displayPreviousPage("results", data, currentMatchday);
+            displayNextPage("results", data, currentMatchday)
+
+    } else {
+
+            parentEl = document.querySelector('.leagueFixtures');
+        
+            const selectRoundEl = document.createElement('div');
+            selectRoundEl.className = "changeMatchday";
+            parentEl.append(selectRoundEl);
+
+            const prevBtn = document.createElement('button');
+            prevBtn.className = "btnMatchday prevBtnFixtures";
+            prevBtn.innerText = "<";
+            selectRoundEl.append(prevBtn);
+
+            const textRound = document.createElement('p');
+            textRound.className = "textRound";
+            textRound.innerText = `Matchday ${currentMatchday}`;
+            selectRoundEl.append(textRound);
+
+            const nextBtn = document.createElement('button')
+            nextBtn.className = "btnMatchday nextBtnFixtures";
+            nextBtn.innerText = ">";
+            selectRoundEl.append(nextBtn);
+
+            renderDynamicElColours(data.competition.code)
+            displayPreviousPage("fixtures", data, currentMatchday);
+            displayNextPage("fixtures", data, currentMatchday)
+    }
+    
+}
+
+function displayPreviousPage(type, data, currentMatchday) {
 
     if (type == "results") {
-            parentEl = document.querySelector('.leagueResults');
+        const displayPreviousPageClick = document.querySelector('.prevBtnResults');
+        displayPreviousPageClick.addEventListener("click", function () {
+            if (currentMatchday > 0) {
+                currentMatchday --;
+            }
+            if (type == "fixtures") {
+                renderFixturesList(data, currentMatchday);
+            } else {
+                renderResultsList(data, currentMatchday);
+            }
+        })
+
     } else {
-            parentEl = document.querySelector('.leagueFixtures');
+        const displayPreviousPageClick = document.querySelector('.prevBtnFixtures');
+        displayPreviousPageClick.addEventListener("click", function () {
+            if (currentMatchday > 0) {
+                currentMatchday --;
+            }
+            if (type == "fixtures") {
+                renderFixturesList(data, currentMatchday);
+            } else {
+                renderResultsList(data, currentMatchday);
+            }
+        })
     }
+}
 
-    const selectRoundEl = document.createElement('div');
-    selectRoundEl.className = "changeRound"
-    parentEl.append(selectRoundEl)
+function displayNextPage(type, data, currentMatchday) {
 
-    const prevRoundBtn = document.createElement('button');
-    prevRoundBtn.className = "btnRound";
-    prevRoundBtn.innerText = "<";
-    selectRoundEl.append(prevRoundBtn);
+    if (type == "results") {
+        const displayNextPageClick = document.querySelector('.nextBtnResults');
+        displayNextPageClick.addEventListener("click", function () {
+            if (currentMatchday < 39) {
+                currentMatchday ++;
+            }
+            if (type == "fixtures") {
+                renderFixturesList(data, currentMatchday);
+            } else {
+                renderResultsList(data, currentMatchday);
+            }
+        })
 
-    const textRound = document.createElement('p');
-    textRound.className = "textRound";
-    textRound.innerText = `Round currentMatchday`;
-    selectRoundEl.append(textRound);
-
-    const nextRoundBtn = document.createElement('button')
-    nextRoundBtn.className = "btnRound"
-    nextRoundBtn.innerText = ">"
-    selectRoundEl.append(nextRoundBtn);
+    } else {
+        const displayNextPageClick = document.querySelector('.nextBtnFixtures');
+        displayNextPageClick.addEventListener("click", function () {
+            if (currentMatchday < 39) {
+                currentMatchday ++;
+            }
+            if (type == "fixtures") {
+                renderFixturesList(data, currentMatchday);
+            } else {
+                renderResultsList(data, currentMatchday);
+            }
+        })
+    }
 }

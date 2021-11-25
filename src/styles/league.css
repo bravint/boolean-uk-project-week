@@ -148,9 +148,7 @@ a {
 .option {
     font-family: 'Work Sans';
 }
-.splash {
-    backdrop-filter: blur( 10px );
-}
+
 .splashContent {
     display: flex;
     justify-content: space-between;
@@ -179,27 +177,32 @@ a {
     justify-content: center;
 }
 
-.changeRound {
+.changeMatchday {
     height: 2.5rem;
-    background-color: chocolate;
+    background-color: black;
     margin-bottom: 1rem;
     display: flex;
     justify-content: center;
     align-items: center;
+    border-radius: 5px;
 
 }
 
-.btnRound {
+.btnMatchday {
     height: 2rem;
     width: 8rem;
-    background-color: white;
+    background-color: rgba(255, 255, 255, 0.0);
+    color: white;
+    font-weight: 700;
+    font-size: 1.5rem;
     border-radius: 5px;
-    border: 1px solid black;
+    border: 1px solid rgba(255, 255, 255, 0.0);
 }
 
 .textRound {
     font-weight: 700;
     margin: 0 40px;
+    color: white;
 }
 
 body {

@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./src/styles/styles.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Work+Sans">
+    <title>Football Stats</title>
+</head>
+<body>
+    <header>
+        <nav>
+            <ul class = "navUl">
+                <li>
+                    <p>Home</p>
+                </li>
+                <li>
+                    <p>Premier League</p>
+                </li>
+                <li>
+                    <p>Champions League</p>
+                </li>
+                <li>
+                    <p>World Cup</p>
+                </li>
+                <li>
+                    <p>Sign In</p>
+                </li>
+            </ul>
+            <form autocomplete="off">
+                    <input class="search" type="text" placeholder="Search for Competitions, Leagues or Teams" required>
+            </form>
+        </nav>
+    </header>
+    
+    <main>
+        <section class="splash">
+            <div class="content">
+                <div>
+                    <img class="eplLogo" src="./src/assets/images/premier-league-1.svg">
+                </div>
+                <div class="stats">
+
+                </div>
+                
+            </div>
+            
+        </section>
+        <section class="leagueNav navUl">
+            <div class="content">
+                <!-- JS inject league season stats-->
+            </div>
+        </section>
+        <section class="">
+            <div class="content">
+
+            </div>
+
+        </section>
+        <section class="table">
+            <div class="content leagueTable">
+                <!-- JS inject league standings-->
+            </div>  
+            <div>
+        /br
+            <p></p>
+        /br
+        </div>  
+        </section>
+        <section class="fixtures">
+            <div class="content leagueFixtures">
+
+            </div>
+
+        </section>
+
+    </main>
+
+    <footer>
+        <ul class = "navUl">
+            <li>
+                <p>Home</p>
+            </li>
+            <li>
+                <p>Premier League</p>
+            </li>
+            <li>
+                <p>Champions League</p>
+            </li>
+            <li>
+                <p>Top of Page</p>
+            </li>
+        </ul>
+    </footer>
+
+    <script defer src="./src/scripts/index.js"></script>
+    <script src="./src/scripts/data.js"></script>
+</body>
+</html>

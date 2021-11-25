@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./src/styles/league.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet"> 
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Work+Sans">
+    <title>Football Stats</title>
+</head>
+<body>
+    <header>
+        <nav class="navSection">
+            <ul class = "listContainer">
+                <li class = "navListItem linkleft">
+                    <a href="./league.html">Leagues</a> 
+                </li>
+                <li class = "navListItem logo">
+                    <a href="./index.html" class="textLogo">Stats Stats Stats</a> 
+                </li>
+                <li class = "navListItem linkright">
+                    <a href="./signin.html">Sign Up / Account</a>
+                </li>
+            </ul>
+        </nav>
+        <form class="form">
+            <select id="league" name="league">
+                <option value="default">Choose a league</option>
+                <option value="BL1">Bundersliga, Germany</option>
+                <option value="PD">La Liga, Spain</option>
+                <option value="FL1">Ligue 1, France</option>
+                <option value="PL">Premier League, England</option>
+                <option value="SA">Serie A, Italy</option>
+            </select>
+        </form>
+    </header>
+    
+    <main>
+        <section class="splash">
+            <div class="content splashContent">
+                <div class="leagueLogoEl">
+                    <!--league logo-->
+                </div>
+                <div class="stats">
+
+                </div>        
+            </div> 
+        
+        </section>
+
+        <section class="table">
+            <div class="content leagueTable">
+                <!-- JS inject league standings-->
+            </div>  
+            <div>
+
+        </div>  
+        </section>
+        <section class="fixtures">
+            <div class="content leagueFixtures">
+
+            </div>
+
+        </section>
+        <section id="leagueResults" class="results">
+            <div class="content leagueResults">
+
+            </div>
+
+        </section>
+
+    </main>
+
+    <footer>
+        <ul class = "listContainer">
+            <li>
+                <p>Home</p>
+            </li>
+            <li>
+                <p>Premier League</p>
+            </li>
+            <li>
+                <p>Champions League</p>
+            </li>
+            <li>
+                <a href="#top">Top of Page</a>
+            </li>
+        </ul>
+    </footer>
+    <script src="./src/scripts/index.js"></script>
+    <script defer src="./src/scripts/league.js"></script>
+</body>
+</html>

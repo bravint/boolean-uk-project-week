@@ -94,6 +94,7 @@ main {
     left: 5%;
     width: 90%;
     height: 50%;
+    padding: 1rem;
 }
 
 body {
@@ -102,7 +103,7 @@ body {
 
 .textLogo {
     font-family: 'Pacifico', cursive;
-    font-size: 6rem;
+    font-size: 5rem;
     color: #091c3e;
 }
 

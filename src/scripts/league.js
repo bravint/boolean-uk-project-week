@@ -8,6 +8,7 @@ renderLeagueLogo(league);
 init('teams', 'PL');
 init('standings', 'PL', renderStandings);
 init('matches', 'PL', renderFixtures);
+init('matches', 'PL', renderResults)
 }
 
 initrender('PL')
@@ -26,6 +27,7 @@ function eventForm() {
         init('teams', league);
         init('standings', league, renderStandings);
         init('matches', league, renderFixtures);
+        init('matches', league, renderResults);
     })
 }
 
@@ -263,14 +265,17 @@ function renderStandings(data) {
     listItemEl.append(lost);
 
     const goalsFor = document.createElement('p');
+    goalsFor.className = "width"
     goalsFor.innerText = "GF";
     listItemEl.append(goalsFor);
 
     const goalsAgainst = document.createElement('p');
+    goalsAgainst.className = "width"
     goalsAgainst.innerText = "GA";
     listItemEl.append(goalsAgainst);
 
     const goalDifference = document.createElement('p');
+    goalDifference.className = "width"
     goalDifference.innerText = "GD";
     listItemEl.append(goalDifference);
 
@@ -279,60 +284,78 @@ function renderStandings(data) {
     listItemEl.append(points);
 
     for (let i = 0; i < data.standings[0].table.length; i++) {
+        
+        const listItemLink = document.createElement('a');
+        listItemLink.className = 'listItemLink';
+        listItemLink.id = data.standings[0].table[i].team.id;
+        listContainer.append(listItemLink);
+        
         const listItemEl = document.createElement('li');
-        listItemEl.className = 'standingsListItem';
+        listItemEl.className = 'standingsListItem tableListItem';
         listItemEl.id = data.standings[0].table[i].team.id;
-        listContainer.append(listItemEl);
+        listItemLink.append(listItemEl);
 
         const position = document.createElement('p');
         position.innerText = data.standings[0].table[i].position;
+        position.id = id = data.standings[0].table[i].team.id;
         listItemEl.append(position);
 
         const crest = document.createElement('img');
+        crest.id = data.standings[0].table[i].team.id;
         crest.src = `${data.standings[0].table[i].team.crestUrl}`;
         crest.setAttribute("height", "25px");
         listItemEl.append(crest);
         
-        const name = document.createElement('a');
-        name.href = '#';
+        const name = document.createElement('p');
         name.className = 'teams';
+        name.id = id = data.standings[0].table[i].team.id;
         name.innerText = fixTeamNames(data.standings[0].table[i].team.name);
-        name.id = data.standings[0].table[i].team.id;
         listItemEl.append(name);
 
         const playedGames = document.createElement('p');
+        playedGames.id = data.standings[0].table[i].team.id;
         playedGames.innerText = data.standings[0].table[i].playedGames;
         listItemEl.append(playedGames);
 
         const won = document.createElement('p');
+        won.id = data.standings[0].table[i].team.id;
         won.innerText = data.standings[0].table[i].won;
         listItemEl.append(won);
 
         const draw = document.createElement('p');
+        draw.id = data.standings[0].table[i].team.id;
         draw.innerText = data.standings[0].table[i].draw;
         listItemEl.append(draw);
 
         const lost = document.createElement('p');
+        lost.id = data.standings[0].table[i].team.id;
         lost.innerText = data.standings[0].table[i].lost;
         listItemEl.append(lost);
 
         const goalsFor = document.createElement('p');
+        goalsFor.id = data.standings[0].table[i].team.id;
+        goalsFor.className = "width"
         goalsFor.innerText = data.standings[0].table[i].goalsFor;
         listItemEl.append(goalsFor);
 
         const goalsAgainst = document.createElement('p');
+        goalsAgainst.id = data.standings[0].table[i].team.id;
+        goalsAgainst.className = "width"
         goalsAgainst.innerText = data.standings[0].table[i].goalsAgainst;
         listItemEl.append(goalsAgainst);
 
         const goalDifference = document.createElement('p');
+        goalDifference.id = data.standings[0].table[i].team.id;
+        goalDifference.className = "width"
         goalDifference.innerText = data.standings[0].table[i].goalDifference;
         listItemEl.append(goalDifference);
 
         const points = document.createElement('p');
         points.innerText = data.standings[0].table[i].points;
+        points.id = data.standings[0].table[i].team.id;
         listItemEl.append(points);
 
-        listItemEl.addEventListener("click", function(event) {
+        listItemLink.addEventListener("click", function(event) {
             let id = event.target.id;
             state.id = id;
             console.log(state.id);
@@ -357,12 +380,12 @@ function renderFixturesList(data, currentMatchday) {
     const fixturesSection = document.querySelector('.leagueFixtures');
     fixturesSection.innerHTML="";
 
-    changeMatchday("fixtures", data, currentMatchday);
-
     const fixturesHeading = document.createElement('h2');
     fixturesHeading.className = "fixturesHeading";
     fixturesHeading.innerText = "Upcoming Matches";
     fixturesSection.append(fixturesHeading);
+
+    changeMatchday("fixtures", data, currentMatchday);
 
     const fixturesListContainer = document.createElement('ul');
     fixturesListContainer.className = 'fixturesContainer';
@@ -379,10 +402,11 @@ function renderFixturesList(data, currentMatchday) {
             const awayId = data.matches[i].awayTeam.id;
 
             const listItemEl = document.createElement('li');
-            listItemEl.className = 'matchdayListItem';
+            listItemEl.className = 'matchdayListItem tableListItem';
             fixturesListContainer.append(listItemEl);
 
             const homeCrest = document.createElement('img');
+            homeCrest.id = data.matches[i].homeTeam.id;
             homeCrest.src = `https://crests.football-data.org/${homeId}.svg`;
             homeCrest.setAttribute("height", "25px");
             listItemEl.append(homeCrest);
@@ -404,11 +428,13 @@ function renderFixturesList(data, currentMatchday) {
             listItemEl.append(awayTeam);
 
             const awaycrest = document.createElement('img');
+            awaycrest.id = data.matches[i].homeTeam.id;
             awaycrest.src = `https://crests.football-data.org/${awayId}.svg`;
             awaycrest.setAttribute("height", "25px");
             listItemEl.append(awaycrest);
 
             const matchDetails = document.createElement('p');
+            matchDetails.className = "width"
             matchDetails.innerText = renderVenue(homeId);
             listItemEl.append(matchDetails);
 
@@ -420,21 +446,24 @@ function renderFixturesList(data, currentMatchday) {
             })
             
             counter ++;           
-            }
-        }
+            } 
+        } 
     }
-
+    
     if (counter == 0) {
         currentMatchday ++;
         console.log ('currentMatchday',currentMatchday);
         renderUpcomingList (data);  
+        renderResults(data, currentMatchday)
     } else if (counter < (state.teams[0].teams.length /2)) {
         currentMatchday ++
+        renderResults(data, currentMatchday)
     }
-    renderResults(data, currentMatchday)
 }
 
-function renderResults(data, currentMatchday) {
+function renderResults(data, currentMatchday = 0) {
+    console.log('reuslt matchday', currentMatchday)
+    if (currentMatchday == 0) currentMatchday = data.matches[0].season.currentMatchday;
     changeMatchday("results", data, currentMatchday)
     renderResultsList(data, currentMatchday);
 }
@@ -443,12 +472,12 @@ function renderResultsList(data, currentMatchday) {
     const resultsSection = document.querySelector('.leagueResults');
     resultsSection.innerHTML="";
 
-    changeMatchday("results", data, currentMatchday);
-
     const resultsHeading = document.createElement('h2')
     resultsHeading.className = "resultsHeading";
     resultsHeading.innerText = "Results";
     resultsSection.append(resultsHeading);
+
+    changeMatchday("results", data, currentMatchday);
 
     const resultsListContainer = document.createElement('ul');
     resultsListContainer.className = 'resultsContainer';
@@ -461,7 +490,7 @@ function renderResultsList(data, currentMatchday) {
                 const awayId = data.matches[i].awayTeam.id;
                 
                 const listItemEl = document.createElement('li');
-                listItemEl.className = 'upcomingListItem';
+                listItemEl.className = 'upcomingListItem tableListItem';
                 resultsListContainer.append(listItemEl);
 
                 const homeCrest = document.createElement('img');
@@ -491,16 +520,9 @@ function renderResultsList(data, currentMatchday) {
                 listItemEl.append(awaycrest);
 
                 const matchVenue = document.createElement('p');
+                matchVenue.className = "width"
                 matchVenue.innerText = renderVenue(homeId);
                 listItemEl.append(matchVenue);
-                
-                const matchLink = document.createElement('p');
-                listItemEl.append(matchVenue);
-
-                const matchDetails = document.createElement('a');
-                matchDetails.href = "#"
-                matchDetails.innerText = 'Match Details';
-                listItemEl.append(matchDetails);
 
                 listItemEl.addEventListener("click", function(event) {
                     let id = event.target.id
@@ -625,16 +647,16 @@ function changeMatchday(type, data, currentMatchday) {
             renderDynamicElColours(data.competition.code)
             displayPreviousPage("fixtures", data, currentMatchday);
             displayNextPage("fixtures", data, currentMatchday)
-    }
-    
+    }   
 }
 
 function displayPreviousPage(type, data, currentMatchday) {
+    const dbMatcday = data.matches[0].season.currentMatchday;
 
     if (type == "results") {
         const displayPreviousPageClick = document.querySelector('.prevBtnResults');
         displayPreviousPageClick.addEventListener("click", function () {
-            if (currentMatchday > 0) {
+            if (currentMatchday > 2) {
                 currentMatchday --;
             }
             if (type == "fixtures") {
@@ -645,9 +667,10 @@ function displayPreviousPage(type, data, currentMatchday) {
         })
 
     } else {
+        
         const displayPreviousPageClick = document.querySelector('.prevBtnFixtures');
         displayPreviousPageClick.addEventListener("click", function () {
-            if (currentMatchday > 0) {
+            if (currentMatchday > dbMatcday) {
                 currentMatchday --;
             }
             if (type == "fixtures") {
@@ -660,11 +683,12 @@ function displayPreviousPage(type, data, currentMatchday) {
 }
 
 function displayNextPage(type, data, currentMatchday) {
+    const dbMatcday = data.matches[0].season.currentMatchday;
 
     if (type == "results") {
         const displayNextPageClick = document.querySelector('.nextBtnResults');
         displayNextPageClick.addEventListener("click", function () {
-            if (currentMatchday < 39) {
+            if (currentMatchday < dbMatcday) {
                 currentMatchday ++;
             }
             if (type == "fixtures") {
